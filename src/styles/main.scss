@@ -1,3 +1,78 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 body {
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
+}
+
+h1 {
   margin: 0;
+}
+
+$cellWidth: 100px;
+$cellGap: 1px;
+$calendarWidth: $cellGap*7 + $cellWidth*7;
+
+.calendar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+
+  margin: 0 auto;
+  padding-top: 60px;
+  width: $calendarWidth;
+
+  & > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: #eeee;
+    border: 1px solid black;
+
+    margin-right: $cellGap;
+    margin-bottom: $cellGap;
+    width: $cellWidth;
+    height: $cellWidth;
+
+    transition: background-color 0.5s, transform 0.5s ;
+    cursor: pointer;
+
+    &:hover {
+      background-color: pink;
+      transform: translate(0, -20px);
+    }
+  }
+
+  @for $i from 1 through 31 {
+    div:nth-child(#{$i})::after {
+      content: "#{$i}";
+      
+    }
+  }
+
+  $week: 
+    7  mon,
+    6  tue,
+    5  wed,
+    4  thu,
+    3  fri,
+    2  sut,
+    1  sun;
+  @each $number, $day in $week {
+    &-#{$day} > div:first-child {
+      margin-left: #{$number*($cellGap+$cellWidth)};
+    }
+  }
+  
+  @for $i from 28 through 31 {
+    &-#{$i} > div:nth-child(n+#{$i+1}) {
+      display: none;
+    }
+  }
 }
